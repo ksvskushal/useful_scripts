@@ -24,4 +24,7 @@ Example: For many linux distros you change the commands to
 
 `export https_proxy="https://user:password@proxy_server:port"`
 
+# If you liked this, please 'Star' the repo.
+More scripts on the way.
 
+<img src="https://media.giphy.com/media/3otPora2GgtfqRX7Xy/giphy.gif" width="400" height="300" />
