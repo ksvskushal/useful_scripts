@@ -1,23 +1,49 @@
-#!/bin/bash
-#script to change the proxy settings in command line in macos
-#takes user input and then changes the proxy state.
+# !/bin/bash
+# Author: Kushal K S V S
+# Script to change the proxy settings in command line in macos.
+# Takes user input and then changes the proxy state.
 
-# Function to check the proxy settings
+# Function to check the proxy settings.
 function check_proxy(){
-	echo -e "HTTP Proxy State";
+	echo -e "\nHTTP Proxy State";
 	echo "$(networksetup -getwebproxy "Wi-Fi")";
 	echo -e "\nHTTPS Proxy State";
 	echo "$(networksetup -getsecurewebproxy "Wi-Fi")";
 }
-# Checking what proxy is in place
+# Function to set the proxy settings.
+function set_proxy(){
+# Checking if username is empty.
+    if [ $# == 2 ]; then
+        networksetup -setsecurewebproxy "Wi-Fi" $1 $2;
+        networksetup -setwebproxy "Wi-Fi" $1 $2;
+    else
+        networksetup -setsecurewebproxy "Wi-Fi" $1 $2 on $3 $4;
+        networksetup -setwebproxy "Wi-Fi" $1 $2 on $3 $4;
+    fi
+}
+# Checking what proxy is in place.
 check_proxy;
-#List of things to choose from
+# Loding presets from the proxy.presets file.
+# If you change the location of the presets file, change the command accordingly.
+source ~proxy.presets;
+# List of things to choose from
 echo -e "\nChoose an option number below\n";
 echo "1 Enable Proxy"
 echo "2 Disable Proxy"
 echo "3 Change Proxy"
-echo "4 Change proxy=PRESET_AUTH"
-echo "5 Change proxy=PRESET_NO_AUTH"
+# Declare an array to store all the preset names.
+declare -a ARRAY_OF_PRESETS
+# Reading the file and storing all the preset names and printing options.
+#If you change the location of the presets file, change the here too.
+COUNT=0;
+while read line
+do
+    IFS='='
+    read -ra ARRAY <<< "$line"
+    echo "$((COUNT+4)). Set Proxy=$ARRAY"
+    ARRAY_OF_PRESETS[$COUNT]=$ARRAY;
+    COUNT=$((COUNT+1));
+done < ~/proxy.presets
 #Taking input from the user
 read choice;
 #Action based on the user input
@@ -42,36 +68,10 @@ elif [ $choice ==  3 ]; then
 	read USERNAME;
 	echo "Enter the password if authenticated"
 	read PASSWORD;
-#Checking if username is empty
-	if [ -z s$USERNAME ]; then
-		networksetup -setsecurewebproxy "Wi-Fi" $SERVER $PORT;
-		networksetup -setwebproxy "Wi-Fi" $SERVER $PORT;
-		check_proxy;
-	else
-		networksetup -setsecurewebproxy "Wi-Fi" $SERVER $PORT on $USERNAME $PASSWORD;
-		networksetup -setwebproxy "Wi-Fi" $SERVER $PORT on $USERNAME $PASSWORD;
-		check_proxy;
-	fi
-elif [ $choice ==  4 ]; then
-#Switch on PRESET_AUTH proxy. ( Proxy with Authentication )
-#Change the proxy details below.
-	SERVER="202.141.80.24"
-	PORT=3128
-	USERNAME="username"
-	PASSWORD="password"
-	networksetup -setsecurewebproxy "Wi-Fi" $SERVER $PORT on $USERNAME $PASSWORD;
-	networksetup -setwebproxy "Wi-Fi" $SERVER $PORT on $USERNAME $PASSWORD;
-	check_proxy;
-elif [ $choice ==  5 ]; then
-#Switch on PRESET_NO_AUTH proxy. ( Proxy without Authentication )
-#Change the proxy details below.
-    SERVER="202.141.80.24"
-    PORT=3128
-    networksetup -setsecurewebproxy "Wi-Fi" $SERVER $PORT;
-    networksetup -setwebproxy "Wi-Fi" $SERVER $PORT;
+    set_proxy $SERVER $PORT $USERNAME $PASSWORD;
+    check_proxy;
+elif [ $choice >  3 ]; then
+    CONFIG_STRING=${!ARRAY_OF_PRESETS[$((choice-4))]}
+    eval set_proxy $CONFIG_STRING
     check_proxy;
 fi
-
-
-
-
