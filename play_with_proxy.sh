@@ -25,7 +25,7 @@ function set_proxy(){
 check_proxy;
 # Loding presets from the proxy.presets file.
 # If you change the location of the presets file, change the command accordingly.
-source ~proxy.presets;
+source ~/proxy.presets;
 # List of things to choose from
 echo -e "\nChoose an option number below\n";
 echo "1 Enable Proxy"
