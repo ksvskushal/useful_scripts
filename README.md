@@ -30,8 +30,8 @@ Script to toggle / change proxy settings in macOS from the command line.
  
   To enable / disable proxy, these environemt variables can be set / unset respectively.
   
-3. Enable execution by running this command.`chmod a+x play_with_proxy.sh`
-4. Execute the `play_with_proxy.sh` file.
+4. Enable execution by running this command.`chmod a+x play_with_proxy.sh`
+5. Execute the `play_with_proxy.sh` file.
 
 ### Format of `proxy.presets` file
 
