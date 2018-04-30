@@ -22,7 +22,7 @@ function set_proxy(){
     fi
 }
 # This is the proxy.presets file path. Use absolute path.
-PRESETS_FILE_PATH="/Users/kushalksvs/Desktop/Files/proxy.presets";
+PRESETS_FILE_PATH=$HOME"/proxy.presets";
 # Number of presets. Doing by counting the number of lines.
 NUMBER_OF_PRESETS="$(grep -v '^[[:space:]]*$' $PRESETS_FILE_PATH | wc -l)"
 # Checking what proxy is in place.
