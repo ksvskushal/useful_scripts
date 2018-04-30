@@ -21,11 +21,15 @@ function set_proxy(){
         networksetup -setwebproxy "Wi-Fi" $1 $2 on $3 $4;
     fi
 }
+# This is the proxy.presets file path. Use absolute path.
+PRESETS_FILE_PATH="/Users/kushalksvs/Desktop/Files/proxy.presets";
+# Number of presets. Doing by counting the number of lines.
+NUMBER_OF_PRESETS="$(grep -v '^[[:space:]]*$' $PRESETS_FILE_PATH | wc -l)"
 # Checking what proxy is in place.
 check_proxy;
 # Loding presets from the proxy.presets file.
 # If you change the location of the presets file, change the command accordingly.
-source ~/proxy.presets;
+source $PRESETS_FILE_PATH;
 # List of things to choose from
 echo -e "\nChoose an option number below\n";
 echo "1 Enable Proxy"
@@ -43,10 +47,16 @@ do
     echo "$((COUNT+4)). Set Proxy=$ARRAY"
     ARRAY_OF_PRESETS[$COUNT]=$ARRAY;
     COUNT=$((COUNT+1));
-done < ~/proxy.presets
+done < $PRESETS_FILE_PATH;
 #Taking input from the user
 read choice;
 #Action based on the user input
+if [ $choice -gt $((NUMBER_OF_PRESETS+3)) ]; then
+echo "...................";
+echo "Not a valid option.";
+echo "...................";
+exit 0;
+fi
 if [ $choice == 1 ]; then
 #Switching the proxy 'ON'
 	networksetup -setsecurewebproxystate "Wi-Fi" on;
