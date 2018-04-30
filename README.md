@@ -10,6 +10,14 @@ Script to toggle / change proxy settings in macOS from the command line.
 - Change proxy settings by entering manually.
 - Set proxy directly using presets.
 
+### Format of `proxy.presets` file
+
+Each *line* should be of the following type.
+
+```<Preset_name>="<server> <port> <username> <password> "```
+
+Note: Leave the username, password fields empty if not required.
+
 #### How to use for macOS
 1. Add/Edit presets in the `proxy.presets` file.
 2. Move the `proxy.presets` file to `$HOME` folder.
@@ -33,13 +41,6 @@ Script to toggle / change proxy settings in macOS from the command line.
 4. Enable execution by running this command.`chmod a+x play_with_proxy.sh`
 5. Execute the `play_with_proxy.sh` file.
 
-### Format of `proxy.presets` file
-
-Each *line* should be of the following type.
-
-```<Preset_name>="<server> <port> <username> <password> "```
-
-Note: Leave the username, password fields empty if not required.
 
 Go through the script to know how to customize it for your needs.
 
